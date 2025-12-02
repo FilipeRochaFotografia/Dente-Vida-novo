@@ -74,12 +74,14 @@ function App() {
             </a>
           </div>
 
-          <button 
-            onClick={(e) => handleScroll(e, 'home')}
+          <a 
+            href="https://wa.link/5hltyy"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-teal-600 text-white px-3 py-2 text-sm md:px-6 md:py-2.5 md:text-base rounded-full font-semibold hover:bg-teal-700 transition-colors shadow-lg shadow-teal-600/20"
           >
             Agendar
-          </button>
+          </a>
         </div>
       </nav>
 

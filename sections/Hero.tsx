@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Star, ShieldCheck, Instagram } from 'lucide-react';
@@ -6,6 +7,20 @@ import { fadeInUp, staggerContainer } from '../utils/animations';
 
 const Hero = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
   return (
     <section id="home" className="relative min-h-screen w-full flex items-center pt-28 lg:pt-20 overflow-hidden bg-soft-gradient">
@@ -31,7 +46,7 @@ const Hero = () => {
               Seu melhor sorriso <br />
               começa na <br className="md:hidden" />
               <span className="text-teal-700">Dente</span> <span className="text-teal-500">Vida</span>
-              <span className="hidden md:inline"></span>
+              <span className="hidden md:inline">.</span>
             </motion.h1>
 
             <motion.p variants={fadeInUp} className="text-lg lg:text-xl text-slate-600 mb-8 leading-relaxed">
@@ -39,10 +54,17 @@ const Hero = () => {
             </motion.p>
 
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 mb-12 w-full sm:w-auto justify-center lg:justify-start">
-              <Button variant="primary" icon={<ChevronRight className="w-5 h-5" />}>
+              <Button 
+                variant="primary" 
+                icon={<ChevronRight className="w-5 h-5" />}
+                onClick={() => window.open('https://wa.link/5hltyy', '_blank')}
+              >
                 Agendar Consulta
               </Button>
-              <Button variant="outline">
+              <Button 
+                variant="outline"
+                onClick={() => scrollToSection('treatments')}
+              >
                 Conhecer Tratamentos
               </Button>
             </motion.div>

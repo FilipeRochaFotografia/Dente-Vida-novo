@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -32,10 +32,20 @@ const Footer = () => {
               Mais que tratamentos odontológicos, construímos autoestima e felicidade.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 bg-white border border-teal-100 rounded-full text-teal-600 hover:bg-teal-50 hover:text-teal-800 transition-colors shadow-sm">
+              <a 
+                href="https://www.instagram.com/dente.vida" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white border border-teal-100 rounded-full text-teal-600 hover:bg-teal-50 hover:text-teal-800 transition-colors shadow-sm"
+              >
                 <Instagram size={20} />
               </a>
-              <a href="#" className="p-2 bg-white border border-teal-100 rounded-full text-teal-600 hover:bg-teal-50 hover:text-teal-800 transition-colors shadow-sm">
+              <a 
+                href="https://www.facebook.com/clin.dentevida/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-white border border-teal-100 rounded-full text-teal-600 hover:bg-teal-50 hover:text-teal-800 transition-colors shadow-sm"
+              >
                 <Facebook size={20} />
               </a>
             </div>
@@ -63,10 +73,6 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-teal-500 shrink-0" />
                 <span>(77) 3084-2858</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-teal-500 shrink-0" />
-                <span>contato@dentevida.com.br</span>
               </li>
             </ul>
           </div>

@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fadeInUp, staggerContainer } from '../utils/animations';
 
@@ -21,13 +21,13 @@ const teamMembers = [
     id: 3,
     name: "Dra. Maísa Ladeia",
     role: "Clínica Geral - Atendimento a pacientes especiais",
-    realImage: "https://i.ibb.co/sv3RHWch/Maisa-1.png"
+    realImage: "https://i.ibb.co/TBSyBrR2/Maisa-3.png"
   },
   {
     id: 4,
     name: "Dra. Jamile Aguiar",
     role: "Clínica Geral - Prótese - Odontopediatria",
-    realImage: "https://i.ibb.co/zWvFcpmc/Jamile-1.png"
+    realImage: "https://i.ibb.co/zh2gtdTn/Jamile-4.jpg"
   },
   {
     id: 5,
@@ -39,6 +39,22 @@ const teamMembers = [
 
 const Team = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Check initially
+    checkMobile();
+
+    // Add listener
+    window.addEventListener('resize', checkMobile);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev + 1) % teamMembers.length);
@@ -46,6 +62,16 @@ const Team = () => {
 
   const prevSlide = () => {
     setActiveIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
+  };
+
+  // Handle swipe gestures
+  const onDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const threshold = 50; // Drag distance threshold
+    if (info.offset.x < -threshold) {
+      nextSlide();
+    } else if (info.offset.x > threshold) {
+      prevSlide();
+    }
   };
 
   const getCardVariant = (index: number) => {
@@ -119,45 +145,48 @@ const Team = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="relative h-[500px] flex items-center justify-center perspective-1000"
+          className="relative h-[420px] md:h-[500px] flex items-center justify-center perspective-1000"
         >
           {/* Navigation Buttons */}
           <button 
             onClick={prevSlide}
-            className="absolute left-2 md:left-10 z-50 p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-teal-900 transition-all border border-white/20"
+            className="absolute left-0 md:left-10 z-50 p-2 md:p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-teal-900 transition-all border border-white/20"
           >
             <ChevronLeft size={24} />
           </button>
           <button 
             onClick={nextSlide}
-            className="absolute right-2 md:right-10 z-50 p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-teal-900 transition-all border border-white/20"
+            className="absolute right-0 md:right-10 z-50 p-2 md:p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white hover:text-teal-900 transition-all border border-white/20"
           >
             <ChevronRight size={24} />
           </button>
 
           {/* Cards */}
-          <div className="relative w-full max-w-[300px] md:max-w-[340px] flex items-center justify-center">
-            <AnimatePresence initial={false}>
-              {teamMembers.map((member, index) => (
-                <motion.div
-                  key={member.id}
-                  variants={window.innerWidth < 768 ? mobileVariants : variants}
-                  animate={getCardVariant(index)}
-                  initial="hidden"
-                  transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
-                  className="absolute w-full aspect-[3/4]"
-                >
-                  {/* Image Card */}
-                  <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/10 bg-teal-800">
-                    <img 
-                      src={member.realImage} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover object-top"
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+          <div className="relative w-[280px] xs:w-[300px] md:w-[340px] flex items-center justify-center">
+            {teamMembers.map((member, index) => (
+              <motion.div
+                key={member.id}
+                variants={isMobile ? mobileVariants : variants}
+                animate={getCardVariant(index)}
+                initial="hidden"
+                transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
+                className="absolute w-full aspect-[3/4] cursor-grab active:cursor-grabbing"
+                drag={isMobile ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={onDragEnd}
+              >
+                {/* Image Card */}
+                <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white/10 bg-teal-800">
+                  <img 
+                    src={member.realImage} 
+                    alt={member.name} 
+                    className="w-full h-full object-cover object-top"
+                    draggable="false" // Prevent native image drag
+                  />
+                </div>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
@@ -169,23 +198,21 @@ const Team = () => {
           viewport={{ once: true }}
           className="text-center mt-6 relative z-20"
         >
-          <AnimatePresence mode="wait">
-             <motion.div
-               key={activeIndex}
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               exit={{ opacity: 0, y: -10 }}
-               transition={{ duration: 0.3 }}
-               className="flex flex-col items-center"
-             >
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                  {teamMembers[activeIndex].name}
-                </h3>
-                <div className="inline-block px-4 py-1.5 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-200 text-sm font-medium">
-                  {teamMembers[activeIndex].role}
-                </div>
-             </motion.div>
-          </AnimatePresence>
+           {/* Replaced AnimatePresence with simple key change for smoother transitions matching carousel */}
+           <motion.div
+             key={activeIndex}
+             initial={{ opacity: 0, y: 10 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.4 }}
+             className="flex flex-col items-center"
+           >
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                {teamMembers[activeIndex].name}
+              </h3>
+              <div className="inline-block px-4 py-1.5 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-200 text-sm font-medium">
+                {teamMembers[activeIndex].role}
+              </div>
+           </motion.div>
         </motion.div>
 
       </div>
