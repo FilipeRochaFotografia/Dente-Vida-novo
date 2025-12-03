@@ -9,31 +9,37 @@ const teamMembers = [
     id: 1,
     name: "Dr. Alexandre Rodrigues Aragão",
     role: "Implantodontia - Clínica Geral - Endodontia - Prótese",
-    realImage: "https://i.ibb.co/6CTFzLG/Alexandre-2-small.png"
+    realImage: "https://i.ibb.co/zWg2d56Z/Alexandre-site-2.png"
   },
   {
     id: 2,
     name: "Dr. Gleysson Alves",
     role: "Clínica Geral - Estética em resina - Odontopediatria",
-    realImage: "https://i.ibb.co/RGZ17PYx/Gleisson-1.png"
+    realImage: "https://i.ibb.co/S46Vq86x/Gleisson-site.png"
   },
   {
     id: 3,
     name: "Dra. Maísa Ladeia",
-    role: "Clínica Geral - Atendimento a pacientes especiais",
+    role: "Pessoas com Comprometimento Sistêmico de dificil controle, com Deficiência e Idosos",
     realImage: "https://i.ibb.co/TBSyBrR2/Maisa-3.png"
   },
   {
     id: 4,
     name: "Dra. Jamile Aguiar",
     role: "Clínica Geral - Prótese - Odontopediatria",
-    realImage: "https://i.ibb.co/zh2gtdTn/Jamile-4.jpg"
+    realImage: "https://i.ibb.co/GQk8bQ6Z/Jamile-Site.png"
   },
   {
     id: 5,
     name: "Leilane Silva",
     role: "Auxiliar de saúde bucal",
     realImage: "https://i.ibb.co/CyB1HBz/Leilane-4.png"
+  },
+  {
+    id: 6,
+    name: "Dra. Rachel Oitaven",
+    role: "Ortodontia",
+    realImage: "https://i.ibb.co/60qMxGzr/38c2258e-d039-11f0-a7ec-02202f98b364-0.png"
   }
 ];
 
