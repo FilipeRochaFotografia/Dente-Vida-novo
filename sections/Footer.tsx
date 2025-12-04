@@ -1,21 +1,70 @@
 
 import React from 'react';
-import { MapPin, Phone, Instagram, Facebook } from 'lucide-react';
+import { MapPin, Phone, Instagram, Facebook, Navigation } from 'lucide-react';
+
+const GoogleMapEmbed = () => {
+  return (
+    <div className="relative w-full h-[500px] bg-[#fdfbf7] rounded-[2.5rem] overflow-hidden border-4 border-white shadow-xl mb-16 group">
+      <iframe
+        title="Localização Clínica Dente Vida"
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        scrolling="no"
+        marginHeight={0}
+        marginWidth={0}
+        style={{ border: 0, filter: 'grayscale(0.1)' }}
+        src="https://maps.google.com/maps?q=Cl%C3%ADnica%20Dente%20Vida%2C%20Av.%20Centen%C3%A1rio%2C%2049%2C%20Vit%C3%B3ria%20da%20Conquista&t=&z=17&ie=UTF8&iwloc=&output=embed"
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className="transition-all duration-500 group-hover:filter-none w-full h-full"
+      ></iframe>
+      
+      {/* Custom Map Pin Overlay */}
+      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-md border border-slate-100 pointer-events-none z-10">
+          <div className="flex items-center text-xs font-bold text-teal-800 uppercase tracking-wide">
+              <MapPin size={16} className="text-red-500 mr-2 animate-bounce" />
+              Nossa Clínica
+          </div>
+      </div>
+
+      {/* Button Overlay */}
+      <div className="absolute bottom-5 right-5 z-10">
+        <a 
+          href="https://www.google.com/maps/search/?api=1&query=Clinica+Dente+Vida+Vitoria+da+Conquista" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="bg-teal-600 text-white px-4 py-2 rounded-full font-bold shadow-xl flex items-center gap-2 text-sm border border-teal-500 ring-2 ring-white hover:bg-teal-700 transition-colors"
+        >
+          <Navigation size={16} />
+          Abrir no GPS
+        </a>
+      </div>
+    </div>
+  );
+};
 
 const Footer = () => {
   return (
     <footer className="bg-soft-gradient text-slate-600 pt-20 pb-10 border-t border-teal-100 relative overflow-hidden">
       
-      {/* Background Decorative Elements (Matching Hero/Social Proof) */}
+      {/* Background Decorative Elements */}
       <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
+        
+        {/* MAPA GOOGLE EMBED */}
+        <div className="mb-8">
+            <h3 className="text-center text-teal-900 font-bold text-2xl mb-8">Nossa Localização</h3>
+            <GoogleMapEmbed />
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           {/* Brand */}
           <div className="space-y-6">
-            {/* Logo Structure tailored for light background */}
             <div className="flex items-center gap-2.5">
               <span className="text-2xl font-light text-slate-900 tracking-tight">Clinica</span>
               <img 
