@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Quote, Star } from 'lucide-react';
@@ -29,11 +28,13 @@ const SocialProof = () => {
   return (
     <section id="testimonials" className="py-24 bg-soft-gradient relative overflow-hidden">
       
-      {/* Background Decorative Elements (Hero Style) */}
-      <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Background Decorative Elements - OTIMIZADO: GPU Acceleration */}
+      <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none transform-gpu" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none transform-gpu" />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
+        
+        {/* Header */}
         <motion.div 
           variants={staggerContainer}
           initial="hidden"
@@ -49,6 +50,7 @@ const SocialProof = () => {
           </motion.p>
         </motion.div>
 
+        {/* Cards Grid */}
         <motion.div 
           variants={staggerContainer}
           initial="hidden"
@@ -60,19 +62,32 @@ const SocialProof = () => {
             <motion.div 
               key={idx} 
               variants={fadeInUp}
-              className="bg-white/60 backdrop-blur-md border border-teal-200 p-8 rounded-[2rem] shadow-[0_0_30px_-5px_rgba(45,212,191,0.2)] relative group hover:-translate-y-2 transition-all duration-300 hover:border-teal-300 hover:shadow-teal-500/30"
+              // OTIMIZAÇÃO: 'transform-gpu' e 'will-change-transform' para performance máxima no hover
+              className="bg-white/60 backdrop-blur-md border border-teal-200 p-8 rounded-[2rem] shadow-[0_0_30px_-5px_rgba(45,212,191,0.2)] relative group hover:-translate-y-2 transition-transform duration-300 hover:border-teal-300 hover:shadow-teal-500/30 transform-gpu will-change-transform"
             >
               <Quote className="absolute top-8 right-8 text-teal-200 w-12 h-12 rotate-180 group-hover:text-teal-300 transition-colors" />
               
               <div className="flex items-center gap-4 mb-6">
                 <div className="relative">
+                  {/* OTIMIZAÇÃO: Lazy loading + Dimensões explícitas */}
                   <img 
                     src={item.image} 
                     alt={item.name} 
+                    width="56"
+                    height="56"
+                    loading="lazy"
+                    decoding="async"
                     className="w-14 h-14 rounded-full border-2 border-white shadow-md object-cover"
                   />
                   <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-0.5 shadow-sm">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-4 h-4" />
+                    <img 
+                      src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
+                      alt="Google" 
+                      width="16"
+                      height="16"
+                      loading="lazy"
+                      className="w-4 h-4" 
+                    />
                   </div>
                 </div>
                 <div>
@@ -92,7 +107,7 @@ const SocialProof = () => {
           ))}
         </motion.div>
 
-        {/* Avaliação movida para baixo */}
+        {/* Avaliação Badge */}
         <motion.div 
           variants={fadeInUp}
           initial="hidden"

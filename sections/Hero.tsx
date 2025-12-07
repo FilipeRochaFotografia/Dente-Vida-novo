@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Star, ShieldCheck, Instagram } from 'lucide-react';
@@ -8,6 +7,7 @@ import { fadeInUp, staggerContainer } from '../utils/animations';
 const Hero = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
 
+  // Função simplificada (não precisamos criar offsets complexos se o scroll-padding estiver no CSS)
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -23,10 +23,12 @@ const Hero = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen w-full flex items-center pt-28 lg:pt-20 overflow-hidden bg-soft-gradient">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none" />
+    // OTIMIZAÇÃO: 'will-change-contents' para ajudar o compositor do browser
+    <section id="home" className="relative min-h-screen w-full flex items-center pt-28 lg:pt-20 overflow-hidden bg-soft-gradient will-change-contents">
+      
+      {/* Background Decorative Elements - Pointer events none para não bloquear cliques */}
+      <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] bg-teal-200/20 rounded-full blur-[100px] pointer-events-none transform-gpu" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none transform-gpu" />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -39,7 +41,7 @@ const Hero = () => {
             className="max-w-2xl flex flex-col items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0"
           >
             <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-teal-50 border border-teal-100 text-teal-800 text-base font-medium mb-6">
-              📅 Agende sua visita
+              <span>📅</span> Agende sua visita
             </motion.div>
 
             <motion.h1 variants={fadeInUp} className="text-4xl lg:text-6xl font-bold text-teal-900 leading-[1.1] tracking-tight mb-6">
@@ -94,46 +96,45 @@ const Hero = () => {
 
           {/* Right Image Composition */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
             className="relative hidden lg:block max-w-[85%] mx-auto"
           >
             {/* Main Image Frame */}
-            <div className="relative z-20 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-teal-900/20 aspect-[3/4] border-4 border-white group bg-slate-200">
+            <div className="relative z-20 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-teal-900/20 aspect-[3/4] border-4 border-white group bg-slate-200 transform-gpu">
               {/* Image with smooth loading transition */}
+              {/* OTIMIZAÇÃO: loading='eager' + width/height + decodificação assíncrona */}
               <img 
                 src="https://i.ibb.co/LdPT7Jfm/Sem-nome-Post-para-Instagram-45.png" 
                 alt="Dr. Alexandre Rodrigues Aragão" 
+                width="600" 
+                height="800"
                 loading="eager"
+                decoding="async"
                 onLoad={() => setImgLoaded(true)}
                 className={`
                   object-cover object-top w-full h-full transform group-hover:scale-105 
-                  transition-all duration-1000 ease-out
-                  ${imgLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-0 blur-sm scale-105'}
+                  transition-transform duration-700 ease-out will-change-transform
+                  ${imgLoaded ? 'opacity-100 blur-0' : 'opacity-0 blur-sm'}
                 `}
               />
               
-              {/* Subtle overlay to blend the dark photo bottom if needed */}
               <div className="absolute inset-0 bg-gradient-to-t from-teal-900/20 via-transparent to-transparent opacity-50 pointer-events-none" />
             </div>
 
             {/* New Top-Right Image (No Container Box) */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              animate={{ 
-                opacity: 1, 
-                x: 0
-              }}
-              transition={{
-                opacity: { duration: 0.8, delay: 0.5 },
-                x: { duration: 0.8, delay: 0.5 }
-              }}
-              className="absolute -right-8 top-4 z-30"
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="absolute -right-8 top-4 z-30 pointer-events-none"
             >
               <img 
                 src="https://i.ibb.co/ZR6DHnFf/Design-sem-nome.png" 
                 alt="Detalhe Dente Vida"
+                width="96"
+                height="96"
                 className="w-24 h-auto drop-shadow-lg"
               />
             </motion.div>
@@ -141,17 +142,11 @@ const Hero = () => {
             {/* Floating Name Card - Increased Size (approx 50%) */}
             <motion.div 
               initial={{ x: -20, opacity: 0 }}
-              animate={{ 
-                x: 0, 
-                opacity: 1
-              }}
-              transition={{ 
-                opacity: { duration: 0.8, delay: 0.6 },
-                x: { duration: 0.8, delay: 0.6 }
-              }}
-              className="absolute -left-12 bottom-8 z-30 bg-white/95 backdrop-blur-md p-6 pr-12 rounded-[2rem] shadow-xl border border-teal-100 flex items-center gap-5"
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="absolute -left-12 bottom-8 z-30 bg-white/95 backdrop-blur-md p-6 pr-12 rounded-[2rem] shadow-xl border border-teal-100 flex items-center gap-5 transform-gpu"
             >
-               <div className="bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-3 rounded-xl text-white shadow-md">
+               <div className="bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-3 rounded-xl text-white shadow-md shrink-0">
                   <Instagram size={32} />
                </div>
                <div>

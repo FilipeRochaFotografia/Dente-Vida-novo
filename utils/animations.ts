@@ -4,15 +4,16 @@ export const fadeInUp: Variants = {
   hidden: { 
     opacity: 0, 
     y: 40,
-    filter: 'blur(10px)'
+    // OTIMIZAÇÃO: Blur removido pois causa queda drástica de FPS em mobile
+    // OTIMIZAÇÃO: 'willChange' prepara a GPU para a animação
+    willChange: 'transform, opacity'
   },
   visible: { 
     opacity: 1, 
     y: 0,
-    filter: 'blur(0px)',
     transition: {
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1] // Custom cubic bezier for smooth feel
+      ease: [0.22, 1, 0.36, 1] // Custom cubic bezier (sensação de "peso" premium)
     }
   }
 };
@@ -23,13 +24,17 @@ export const staggerContainer: Variants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.15,
-      delayChildren: 0.2
+      delayChildren: 0.1 // Reduzi de 0.2 para 0.1 para parecer mais rápido
     }
   }
 };
 
 export const fadeInScale: Variants = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { 
+    opacity: 0, 
+    scale: 0.95,
+    willChange: 'transform, opacity'
+  },
   visible: { 
     opacity: 1, 
     scale: 1,
@@ -41,7 +46,11 @@ export const fadeInScale: Variants = {
 };
 
 export const slideInLeft: Variants = {
-  hidden: { x: -60, opacity: 0 },
+  hidden: { 
+    x: -60, 
+    opacity: 0,
+    willChange: 'transform, opacity'
+  },
   visible: { 
     x: 0, 
     opacity: 1,
